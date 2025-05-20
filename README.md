@@ -6,18 +6,20 @@ Este proyecto permite procesar archivos `.mat` que contienen señales multicanal
 
 ## 📁 Estructura del Proyecto
 
-
+```plaintext
+.
 ├── AllData/
-│ ├── DatosSanos_Entrenamiento/ # Archivos .mat del set de entrenamiento
-│ ├── Fallo1/ # Archivos .mat con señales con fallo
-│ ├── ProcesadoMatrizZ/ # Directorio de salida para CSVs procesados
-│ └── CSV/ # Medias y desviaciones estándar
-├── extraer_features_senales.py # Script principal de procesamiento
-├── codigo_entreno.ipynb # Notebook con pruebas y visualizaciones
-├── requirements.txt # Dependencias del proyecto
-├── .gitignore # Archivos y carpetas ignoradas por Git
-└── README.md # Este archivo
+│   ├── DatosSanos_Entrenamiento/   # Archivos .mat del set de entrenamiento
+│   ├── Fallo1/                     # Archivos .mat con señales con fallo
+│   ├── ProcesadoMatrizZ/          # Directorio de salida para CSVs procesados
+│   └── CSV/                       # Medias y desviaciones estándar
+├── extraer_features_senales.py    # Script principal de procesamiento
+├── codigo_entreno.ipynb           # Notebook con pruebas y visualizaciones
+├── requirements.txt               # Dependencias del proyecto
+├── .gitignore                     # Archivos y carpetas ignoradas por Git
+└── README.md                      # Este archivo
 
+```
 ## ⚙️ Funcionalidades
 
 El script principal (`extraer_features_senales.py`) realiza:
