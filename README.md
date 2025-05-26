@@ -86,6 +86,8 @@ pip install -r requirements.txt
   Si el tiempo de rotación cambia, ajusta este valor para mantener la coherencia temporal en la extracción de características.
 
 ## 👨‍💻 Autores
+Ariel Gonzalez
+Abel Gomez
 
 - **Iván Ariel González Moreira**  
   📧 Contacto: *ivargonzm@gmail.com*
