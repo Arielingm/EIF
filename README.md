@@ -89,7 +89,7 @@ pip install -r requirements.txt
 Ariel Gonzalez
 Abel Gomez
 
-- **Iván Ariel González Moreira**  
+- **Iván Ariel González**  
   📧 Contacto: *ivargonzm@gmail.com*
 
 - **Abel Gómez**  
