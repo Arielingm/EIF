@@ -1,0 +1,14 @@
+{
+  "electrico": {
+    "ntrees": 109,
+    "sample_size": 1024,
+    "extension_level": 17
+  },
+  "vibracion": {
+    "ntrees": 754,
+    "sample_size": 1024,
+    "extension_level": 13
+  },
+  "umbral_elec": 0.4087416459392099,
+  "umbral_vib": 0.3767073560081415
+}

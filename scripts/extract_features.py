@@ -3,9 +3,8 @@ import csv
 import h5py
 import numpy as np
 import pandas as pd
-from itertools import permutations
-from math import factorial, log2
-from scipy.stats import entropy, kurtosis
+from scipy.stats import kurtosis
+from scipy.signal import welch
 from multiprocessing import Pool, cpu_count
 import antropy as ant
 
@@ -36,19 +35,36 @@ def katz_fractal(signal):
 def permutation_entropy(signal, m=6, normalizar=False):
     return ant.perm_entropy(signal, order=m, normalize=normalizar)
 
-def extraer_features(signal):
+def features_espectrales(signal, fs=20000):
+    freqs, psd = welch(signal, fs=fs, nperseg=1024)
+    def energia_banda(f_min, f_max):
+        mask = (freqs >= f_min) & (freqs <= f_max)
+        return np.sum(psd[mask])
+    return [
+        energia_banda(0,   10),    # DC
+        energia_banda(45,  55),    # 50Hz fundamental
+        energia_banda(95,  105),   # 100Hz
+        energia_banda(145, 155),   # 150Hz
+        energia_banda(195, 205),   # 200Hz
+    ]
 
-    # Features originales
-    katz  = katz_fractal(signal)
-    pe    = permutation_entropy(signal)
-    kurt  = kurtosis(signal) if np.std(signal) > 1e-10 else 0.0
+def extraer_features_electricas(signal):
+    kurt = kurtosis(signal) if np.std(signal) > 1e-10 else 0.0
+    return [
+        katz_fractal(signal),
+        permutation_entropy(signal),
+        kurt,
+        *features_espectrales(signal)
+    ]  # 8 features
 
-    # Features nuevas
-    rms           = np.sqrt(np.mean(signal**2))
-    valor_pico    = np.max(np.abs(signal))
-    factor_cresta = valor_pico / rms if rms > 1e-10 else 0.0
+def extraer_features_vibracion(signal):
+    kurt = kurtosis(signal) if np.std(signal) > 1e-10 else 0.0
+    return [
+        katz_fractal(signal),
+        permutation_entropy(signal),
+        kurt,
+    ]  # 3 features
 
-    return [katz, pe, kurt, rms, valor_pico, factor_cresta]
 # =============================
 # ESTANDARIZACIÓN
 # =============================
@@ -99,36 +115,19 @@ def cargar_señales(filepath):
     return señales
 
 # =============================
-# EXTRAER FEATURES DE UN ARCHIVO
-# =============================
-
-def procesar_archivo(filepath):
-    señales  = cargar_señales(filepath)
-    n_muestras = len(next(iter(señales.values())))
-    n_ventanas = n_muestras // VENTANA
-    filas = []
-
-    for v in range(n_ventanas):
-        inicio = v * VENTANA
-        fin    = inicio + VENTANA
-        fila   = []
-        for señal in señales.values():
-            fila.extend(extraer_features(señal[inicio:fin]))
-        filas.append(fila)
-
-    return filas, n_ventanas, señales.keys()
-
-# =============================
 # NOMBRES DE COLUMNAS
 # =============================
 
-NOMBRES_COLS = [
-    f"{s}_{f}"
-    for s in ["u", "v", "w", "front_DE_Y", "front_DE_Z",
-              "rear_NDE_Y", "rear_NDE_Z", "housing"]
-    for f in ["katz", "perm_entropy", "kurtosis",
-              "rms", "pico", "cresta"]
-]
+NOMBRES_COLS = (
+    [f"{s}_{f}" for s in ["u", "v", "w"]
+     for f in ["katz", "perm_entropy", "kurtosis",
+               "espectro_DC", "espectro_50Hz", "espectro_100Hz",
+               "espectro_150Hz", "espectro_200Hz"]]
+    +
+    [f"{s}_{f}" for s in ["front_DE_Y", "front_DE_Z",
+                           "rear_NDE_Y", "rear_NDE_Z", "housing"]
+     for f in ["katz", "perm_entropy", "kurtosis"]]
+)
 
 
 # =============================
@@ -138,17 +137,25 @@ NOMBRES_COLS = [
 def procesar_archivo_wrapper(args):
     filepath, archivo = args
     try:
-        señales  = cargar_señales(filepath)
+        señales    = cargar_señales(filepath)
         n_muestras = len(next(iter(señales.values())))
         n_ventanas = n_muestras // VENTANA
-        filas = []
+        filas      = []
 
         for v in range(n_ventanas):
             inicio = v * VENTANA
             fin    = inicio + VENTANA
             fila   = []
-            for señal in señales.values():
-                fila.extend(extraer_features(señal[inicio:fin]))
+
+            # Eléctricas → 8 features
+            for nombre in ["u", "v", "w"]:
+                fila.extend(extraer_features_electricas(señales[nombre][inicio:fin]))
+
+            # Vibración → 3 features
+            for nombre in ["front_DE_Y", "front_DE_Z",
+                           "rear_NDE_Y", "rear_NDE_Z", "housing"]:
+                fila.extend(extraer_features_vibracion(señales[nombre][inicio:fin]))
+
             filas.append(fila)
 
         return archivo, filas, n_ventanas, None
@@ -274,4 +281,5 @@ def run():
 # EJECUTAR
 # =============================
 
-run()
+if __name__ == '__main__':
+    run()
