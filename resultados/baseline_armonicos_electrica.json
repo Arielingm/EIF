@@ -1,0 +1,31 @@
+{
+  "modelo": "baseline_armonicos_bandas_laterales",
+  "fuente_senal": "electrica",
+  "umbral_db": 7.596689103669192,
+  "metricas_por_familia": {
+    "barra_rota": {
+      "umbral": 7.596689103669192,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "auc": 0.5466479137365213,
+      "tp": 0,
+      "fp": 0,
+      "tn": 27,
+      "fn": 79,
+      "n_experimentos": 106
+    },
+    "rodamiento": {
+      "umbral": 7.596689103669192,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "auc": 0.36296296296296293,
+      "tp": 0,
+      "fp": 0,
+      "tn": 27,
+      "fn": 40,
+      "n_experimentos": 67
+    }
+  }
+}

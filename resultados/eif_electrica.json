@@ -1,0 +1,50 @@
+{
+  "modelo": "extended_isolation_forest",
+  "fuente_senal": "electrica",
+  "n_features": 603,
+  "mejores_hiperparametros": {
+    "ntrees": 48,
+    "sample_size": 32,
+    "extension_level": 2,
+    "percentil_umbral": 98
+  },
+  "umbral": 0.5310288872574368,
+  "metricas_por_familia": {
+    "barra_rota": {
+      "umbral": 0.5310288872574368,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "auc": 0.5278949835911861,
+      "tp": 0,
+      "fp": 0,
+      "tn": 27,
+      "fn": 79,
+      "n_experimentos": 106
+    },
+    "rodamiento": {
+      "umbral": 0.5310288872574368,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "auc": 0.5194444444444445,
+      "tp": 0,
+      "fp": 0,
+      "tn": 27,
+      "fn": 40,
+      "n_experimentos": 67
+    }
+  },
+  "metricas_global": {
+    "umbral": 0.5310288872574368,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "auc": 0.5250544662309369,
+    "tp": 0,
+    "fp": 0,
+    "tn": 27,
+    "fn": 119,
+    "n_experimentos": 146
+  }
+}

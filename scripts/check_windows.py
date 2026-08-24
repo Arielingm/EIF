@@ -1,8 +1,11 @@
-import pandas as pd
 import os
+import sys
 
-RUTA_FEATURES = "features"
-CSV_INDEX     = "Motor_DB/index/master_index.csv"
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+import pandas as pd
+
+from utils.config import CSV_INDEX, RUTA_FEATURES
 
 index = pd.read_csv(CSV_INDEX)
 

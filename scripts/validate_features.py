@@ -1,24 +1,23 @@
 import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import numpy as np
 import pandas as pd
+
+from utils.config import CSV_INDEX, RUTA_FEATURES, PATH_MEDIAS
 
 # =============================
 # CONFIGURACIÓN
 # =============================
 
-RUTA_FEATURES   = "features"
-CSV_INDEX       = "Motor_DB/index/master_index.csv"
-PATH_MEDIAS     = "features/medias_sanos.csv"
-N_FEATURES      = 48
-
-
-NOMBRES_COLS = [
-    f"{s}_{f}"
-    for s in ["u", "v", "w", "front_DE_Y", "front_DE_Z",
-              "rear_NDE_Y", "rear_NDE_Z", "housing"]
-    for f in ["katz", "perm_entropy", "kurtosis",
-              "rms", "pico", "cresta"]
-]
+# N_FEATURES se calcula dinámicamente a partir de las columnas de train,
+# en vez de asumir el esquema estadístico (Katz/entropía/curtosis/...) del
+# pipeline antiguo (features_1/): el pipeline actual (features_fft/) usa
+# espectro dB por bin de frecuencia (5608 columnas).
+_ruta_train = os.path.join(RUTA_FEATURES, "train", "sano_train.csv")
+N_FEATURES  = pd.read_csv(_ruta_train, nrows=0).shape[1] if os.path.exists(_ruta_train) else None
 # =============================
 # HELPERS
 # =============================
@@ -58,9 +57,9 @@ def validar_estructura(index):
     print("VALIDACIÓN 1: ESTRUCTURA DE ARCHIVOS")
     print("="*60)
 
-    # Verificar medias_sanos.csv
+    # Verificar medias_sanos.csv (formato: index=feature, columnas=mean/std)
     if os.path.exists(PATH_MEDIAS):
-        medias = pd.read_csv(PATH_MEDIAS, header=None)
+        medias = pd.read_csv(PATH_MEDIAS, index_col=0)
         if len(medias) == N_FEATURES:
             OK(f"medias_sanos.csv existe y tiene {N_FEATURES} filas")
         else:

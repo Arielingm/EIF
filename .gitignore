@@ -1,2 +1,5 @@
 ambiente
 Motor_DB
+features_fft
+__pycache__/
+*.pyc

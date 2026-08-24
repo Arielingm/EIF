@@ -1,0 +1,48 @@
+{
+  "modelo": "isolation_forest",
+  "fuente_senal": "hibrida",
+  "n_features": 5608,
+  "mejores_hiperparametros": {
+    "n_estimators": 50,
+    "max_samples": 64
+  },
+  "umbral": 0.7553375197133838,
+  "metricas_por_familia": {
+    "barra_rota": {
+      "umbral": 0.7553375197133838,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "auc": 0.6887013595874355,
+      "tp": 0,
+      "fp": 0,
+      "tn": 27,
+      "fn": 79,
+      "n_experimentos": 106
+    },
+    "rodamiento": {
+      "umbral": 0.7553375197133838,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "auc": 0.6509259259259259,
+      "tp": 0,
+      "fp": 0,
+      "tn": 27,
+      "fn": 40,
+      "n_experimentos": 67
+    }
+  },
+  "metricas_global": {
+    "umbral": 0.7553375197133838,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "auc": 0.6760037348272643,
+    "tp": 0,
+    "fp": 0,
+    "tn": 27,
+    "fn": 119,
+    "n_experimentos": 146
+  }
+}
